@@ -27,6 +27,7 @@ cd instagram-sentiment-analysis
 Refer [https://developers.facebook.com/docs/instagram-basic-display-api/getting-started/]
 
 ## Setting up the Server
+
 1) Navigate to backend Directory
 
 ```bash
@@ -50,13 +51,19 @@ venv\scripts\activate
 pip install -r requirements.txt
 ```
 
-5) Open another Terminal/CMD, Activate the Virtual Environment(Navigate to Root Directory which has the venv folder and Follow Step 3)
+5) Execute the Following Commands:
     ```bash
     python
+    ```
+    ```bash
     import nltk
+    ```
+    ```bash
     nltk.download('vader_lexicon')
     ```
-    Close the Termial
+    ```bash
+    exit()
+    ```
 
 7) Start the Server
 
@@ -118,5 +125,11 @@ Deployed Link is [https://13a8-2405-201-e033-7054-e08d-ed5c-20f4-b6c9.ngrok-free
 
 Open this in Browser to View the Deployed App.
 
-7) Open frontend/src/context/authContext.tsx replace the redirect_uri with the Deployed Link. Replace the Valid OAuth Redirect URIs, Deauthorize callback URL, Data Deletion Request URL in the Facebook Developer Portal with the Deployed Link. Open backend/server/server/settings.py replace "YOUR_DEPLOYED_LINK" with the Deployed Link for ALLOWED_HOSTS and CROSS_ORIGIN_WHITELIST.
+7) Open frontend/src/context/authContext.tsx replace the redirect_uri with the Deployed Link followed by /authorization route.
+    Example: https://13a8-2405-201-e033-7054-e08d-ed5c-20f4-b6c9.ngrok-free.app/authorization
+   
+9) Replace the Valid OAuth Redirect URIs, Deauthorize callback URL, Data Deletion Request URL in the Facebook Developer Portal with the same ([https://13a8-2405-201-e033-7054-e08d-ed5c-20f4-b6c9.ngrok-free.app/authorization]).
+
+10) Open backend/server/server/settings.py replace "https://<YOUR_DEPLOYED_LINK>" with the Deployed Link for ALLOWED_HOSTS and CROSS_ORIGIN_WHITELIST.
+    Example: [https://13a8-2405-201-e033-7054-e08d-ed5c-20f4-b6c9.ngrok-free.app]
 
