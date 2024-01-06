@@ -52,9 +52,9 @@ pip install -r requirements.txt
 
 5) Open another Terminal/CMD, Activate the Virtual Environment(Navigate to Root Directory which has the venv folder and Follow Step 3)
     ```bash
-        python
-        import nltk
-        nltk.download('vader_lexicon')
+    python
+    import nltk
+    nltk.download('vader_lexicon')
     ```
     Close the Termial
 
@@ -91,7 +91,7 @@ This will start the Developlment Server running at http://localhost:8100/
 
 ## Setting up ngrok
 
-1) Install Ngrok extract Zip file to a Directory and Navigate to that directory 
+1) Install Ngrok ([https://ngrok.com/download]) Extract Zip file to a Directory and Navigate to that directory 
 
 2) Open this Directory in cmd (directory with ngrok.exe)
 
@@ -100,7 +100,7 @@ This will start the Developlment Server running at http://localhost:8100/
 4) Run the following command to add your authtoken to the default ngrok.yml configuration file
 
 ```bash
-ngrok config add-authtoken <Your-Token>
+ngrok config add-authtoken <YOUR_AUTH_TOKEN>
 ```
 
 5) Deploy your app online
