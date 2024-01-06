@@ -27,6 +27,7 @@ cd instagram-sentiment-analysis
 Refer [https://developers.facebook.com/docs/instagram-basic-display-api/getting-started/]
 
 ## Setting up the Server
+
 1) Navigate to backend Directory
 
 ```bash
