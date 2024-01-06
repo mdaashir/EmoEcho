@@ -1,0 +1,53 @@
+.body{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.post-image{
+    border-radius: 50%;
+}
+
+.doughnut-col{
+    display: flex;
+    align-items: center;
+}
+
+.caption-column{
+    display: flex;
+    align-items: center;
+}
+
+.post-caption{
+    font-size: 12px !important;
+    text-align: justify;
+    font-family: 'Courier New', monospace;
+}
+
+.sadness-text-column{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    text-align: left;
+}
+
+.score-text{
+    font-size: 1.5rem !important;
+    font-weight: 700;
+    text-align: justify;
+}
+
+.sadness-message{
+    font-size: 0.8rem !important;
+    font-weight: 700;
+    text-align: justify;
+}
+
+.post-sadness-text{
+    font-size: 12px !important;
+    text-align: justify;
+}
+
+.read-more{
+    font-weight: 800 !important;
+    color: rgb(50, 135, 174);
+    cursor: pointer;
+}
