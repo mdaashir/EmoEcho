@@ -24,8 +24,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [authorizationLink, setAuthorizationLink] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const redirect_uri =
-    "<YOUR_REDIRECT_URI>";
+  const redirect_uri = "<YOUR_REDIRECT_URI>";
   const client_id = "<YOUR_CLIENT_ID>";
   const client_secret = "<YOUR_CLIENT_SECRET>";
 
