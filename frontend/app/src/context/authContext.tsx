@@ -25,9 +25,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const redirect_uri =
-    "https://13a8-2405-201-e033-7054-e08d-ed5c-20f4-b6c9.ngrok-free.app/authorization";
-  const client_id = "377921924623335";
-  const client_secret = "55cee561331d2ca696811ca830dbcc93";
+    "<YOUR_REDIRECT_URI>";
+  const client_id = "<YOUR_CLIENT_ID>";
+  const client_secret = "<YOUR_CLIENT_SECRET>";
 
   const generateAuthCode = async () => {
     await axios
