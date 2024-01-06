@@ -50,7 +50,15 @@ venv\scripts\activate
 pip install -r requirements.txt
 ```
 
-6) Start the Server
+5) Open another Terminal/CMD, Activate the Virtual Environment(Navigate to Root Directory which has the venv folder and Follow Step 3)
+    ```bash
+        python
+        import nltk
+        nltk.download('vader_lexicon')
+    ```
+    Close the Termial
+
+7) Start the Server
 
 ```bash
 cd server
