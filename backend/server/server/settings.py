@@ -1,14 +1,16 @@
 from pathlib import Path
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-(w61h7drj(a@r&y0ldt&!+((jmq7ri&pb#07i^m@(5k*_+xv5&'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('HOSTS').split(',')
 
 INSTALLED_APPS = [
     'django.contrib.auth',
@@ -66,9 +68,6 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-ALLOWED_HOSTS=['http://127.0.0.1:8100', 'http://127.0.0.1', 'http://localhost:8100']
-
 CORS_ORIGIN_ALLOW_ALL = False
 
-CORS_ORIGIN_WHITELIST = ('http://127.0.0.1:8100', 'http://127.0.0.1', 'http://localhost:8100')
+CORS_ORIGIN_WHITELIST = os.getenv('HOSTS').split(',')

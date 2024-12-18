@@ -381,3 +381,4 @@ FodyWeavers.xsd
 # Python Environments
 __pypackages__/
 .venv/
+.env
