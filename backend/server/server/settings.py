@@ -10,16 +10,21 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = os.getenv('DEBUG')
 
-ALLOWED_HOSTS = os.getenv('HOSTS').split(',')
+ALLOWED_HOSTS = os.getenv('HOSTS', '').split(',')
 
 INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.staticfiles',
+    # Internal apps
     'instagramAPI',
     'emotionAnalyzer',
-    'corsheaders'
+    # External apps
+    'corsheaders',
+    'rest_framework_api_key',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -30,7 +35,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # External midddleware
     'corsheaders.middleware.CorsMiddleware',
+    # Internal middleware
     'server.middleware.access.BlockNonApiUrls'
 ]
 
@@ -67,8 +74,16 @@ USE_I18N = True
 
 USE_TZ = True
 
+STATIC_URL = 'static/'
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = False
 
-CORS_ORIGIN_WHITELIST = os.getenv('WHITELISTED_HOSTS').split(',')
+CORS_ORIGIN_WHITELIST = os.getenv('WHITELISTED_HOSTS', '').split(',')
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_api_key.authentication.APIKeyAuthentication',
+    ),
+}
