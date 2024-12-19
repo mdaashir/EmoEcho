@@ -13,18 +13,17 @@ DEBUG = os.getenv('DEBUG')
 ALLOWED_HOSTS = os.getenv('HOSTS', '').split(',')
 
 INSTALLED_APPS = [
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
     # Internal apps
-    'instagramAPI',
-    'emotionAnalyzer',
+    "instagramAPI",
+    "emotionAnalyzer",
     # External apps
-    'corsheaders',
-    'rest_framework_api_key',
-    'drf_yasg',
+    "corsheaders",
+    "drf_yasg",
 ]
 
 MIDDLEWARE = [
@@ -81,9 +80,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ORIGIN_WHITELIST = os.getenv('WHITELISTED_HOSTS', '').split(',')
-
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_api_key.authentication.APIKeyAuthentication',
-    ),
-}

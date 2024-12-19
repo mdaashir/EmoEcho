@@ -1,5 +1,5 @@
 from django.urls import path
-from rest_framework.permissions import HasAPIKey
+from rest_framework.permissions import AllowAny
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
@@ -12,25 +12,11 @@ schema_view = get_schema_view(
         license=openapi.License(name="MIT License"),
     ),
     public=False,
-    permission_classes=(HasAPIKey,),
+    permission_classes=(AllowAny,),
     validators=["ssv"],
 )
 
-# api_key_scheme = openapi.SecurityScheme(
-#     type=openapi.TYPE_APIKEY,
-#     in_=openapi.IN_HEADER,
-#     name="Authorization",
-#     description="API key authentication",
-# )
-
-# schema_view.security = {
-#     "API Key": api_key_scheme,
-# }
-
 urls = [
-    # Endpoint for Swagger JSON / YAML
-    path("swagger<format>/", schema_view.without_ui(cache_timeout=0), name="swagger-json"),
-
     # Endpoint for Swagger UI
     path("swagger/", schema_view.with_ui("swagger", cache_timeout=0), name="swagger-ui"),
 
