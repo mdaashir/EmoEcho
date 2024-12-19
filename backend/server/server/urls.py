@@ -1,6 +1,6 @@
 from django.urls import path, include
 
 urlpatterns = [
-    path('api/', include('instagramAPI.urls')),
-    path('api/', include('emotionAnalyzer.urls'))
+    path('api/v1/instagram/', include('instagramAPI.urls')),
+    path('api/v1/model/', include('emotionAnalyzer.urls'))
 ]

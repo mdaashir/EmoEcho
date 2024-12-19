@@ -2,6 +2,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('getSadnessScore/', views.getSadnessScore, name='getSadnessScore'),
-    path('getBulkSadnessScore/', views.getBulkSadnessScore, name='getBulkSadnessScore'),
+    path('get-sadness-score/', views.getSadnessScore, name='getSadnessScore'),
+    path('get-bulk-sadness-score/', views.getBulkSadnessScore, name='getBulkSadnessScore'),
 ]
