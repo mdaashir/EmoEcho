@@ -383,3 +383,6 @@ FodyWeavers.xsd
 __pypackages__/
 .venv/
 .env
+
+# Pycharm files
+.idea/
