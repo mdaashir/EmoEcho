@@ -23,7 +23,6 @@ INSTALLED_APPS = [
     "emotionAnalyzer",
     # External apps
     "corsheaders",
-    "drf_yasg",
 ]
 
 MIDDLEWARE = [
