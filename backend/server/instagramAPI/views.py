@@ -20,7 +20,7 @@ def getAuthorizationCode(request):
         return JsonResponse({'response': url})   
     
 @api_view(['POST'])
-def getAcessToken(request):
+def getAccessToken(request):
     if request.method == 'POST':
         url = "https://api.instagram.com/oauth/access_token"
         data = {
