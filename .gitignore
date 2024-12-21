@@ -381,8 +381,10 @@ FodyWeavers.xsd
 
 # Python Environments
 __pypackages__/
+backend/typings/
 .venv/
 .env
 
-# Pycharm files
+# JetBrains Pycharm
 .idea/
+.run/
