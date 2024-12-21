@@ -1,7 +1,8 @@
-from django.urls import path
-from . import views
+from rest_framework.routers import DefaultRouter
+from .views import getSadnessScore, getBulkSadnessScore
 
-urlpatterns = [
-    path('get-sadness-score/', views.getSadnessScore, name='getSadnessScore'),
-    path('get-bulk-sadness-score/', views.getBulkSadnessScore, name='getBulkSadnessScore'),
-]
+router = DefaultRouter()
+router.register("get-sadness-score", getSadnessScore, basename='getSadnessScore')
+router.register("get-bulk-sadness-score", getBulkSadnessScore, basename='getBulkSadnessScore')
+
+urlpatterns = router.urls
