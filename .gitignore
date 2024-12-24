@@ -384,6 +384,7 @@ __pypackages__/
 backend/typings/
 .venv/
 .env
+static/
 
 # JetBrains Pycharm
 .idea/

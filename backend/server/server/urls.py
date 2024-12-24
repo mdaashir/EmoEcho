@@ -1,5 +1,5 @@
 from django.urls import path, include
-# from . import swagger
+from . import swagger
 
 urlpatterns = [
     # Instagram API routes
@@ -9,5 +9,5 @@ urlpatterns = [
     path('api/v1/model/', include('emotionAnalyzer.urls')),
 
     # API Documentation routes
-    # path('api/v1/docs/', include('swagger.urls')),
+    path('api/v1/docs/', include(swagger.urls)),
 ]
