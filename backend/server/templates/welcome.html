@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to EmoEcho</title>
+    <style>
+        /* General Reset and Styling */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(120deg, #ff9a9e, #fad0c4);
+            color: #333333;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Container Styling */
+        .box {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            max-width: 650px;
+            width: 95%;
+            animation: fadeIn 1.2s ease-in-out;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #ff6f61;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.15em;
+            line-height: 1.6;
+            margin: 15px 0;
+            color: #555555;
+        }
+
+        /* Button-styled Links */
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin: 15px 0;
+        }
+
+        a {
+            display: inline-block;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            background: linear-gradient(45deg, #ff6f61, #ff9068);
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 1rem;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            text-decoration: none;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Email Styling */
+        .email-section {
+            margin-top: 25px;
+        }
+
+        .email-label {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #444444;
+        }
+
+        .email-link {
+            display: inline-block;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #ff6f61;
+            background: #ffe5e1;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            text-decoration: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .email-link:hover {
+            text-decoration: none;
+            color: #ffffff;
+            background: linear-gradient(45deg, #ff6f61, #ff9068);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Fade-in Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Footer Styling */
+        footer {
+            margin-top: 30px;
+            font-size: 0.85rem;
+            color: #888888;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>Welcome to EmoEcho</h1>
+        <p>This platform is designed to analyze and interpret emotional responses from textual data.</p>
+        <p>You can access detailed documentation of the EmoEcho API through the links below:</p>
+        <ul>
+            <li><a href="api/v1/docs/swagger/" target="_blank">Swagger UI Documentation</a></li>
+            <li><a href="api/v1/docs/redoc/" target="_blank">ReDoc UI Documentation</a></li>
+        </ul>
+        <p>Explore the EmoEcho capabilities to analyze text, retrieve insights, and manage user data in an efficient and easy-to-use interface.</p>
+
+        <!-- Email Section -->
+        <div class="email-section">
+            <p class="email-label">Contact Us:</p>
+            <a class="email-link" href="mailto:s.mohamedaashir@gmail.com">s.mohamedaashir@gmail.com</a>
+        </div>
+
+        <footer>
+            &copy; 2024 EmoEcho. All Rights Reserved.
+        </footer>
+    </div>
+</body>
+</html>

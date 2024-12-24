@@ -5,7 +5,10 @@ class BlockNonApiUrls:
         self.get_response = get_response
 
     def __call__(self, request):
-        if not request.path.startswith("/api/"):
-            return HttpResponseForbidden("Access to this URL is forbidden.")
-        response = self.get_response(request)
-        return response
+        # Allow the home page ("/") and any path starting with "/api/"
+        if request.path == "/" or request.path.startswith("/api/"):
+            response = self.get_response(request)
+            return response
+
+        # Block all other paths
+        return HttpResponseForbidden("Access to this URL is forbidden.")
