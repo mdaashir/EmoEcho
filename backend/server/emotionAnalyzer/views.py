@@ -1,67 +1,90 @@
-from rest_framework import viewsets
-from rest_framework.decorators import action
-from django.http import JsonResponse
-import re
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status, permissions
+from drf_yasg.utils import swagger_auto_schema
+from .schemas import (
+    get_sadness_score_request_body,
+    get_sadness_score_responses,
+    get_bulk_sadness_score_request_body,
+    get_bulk_sadness_score_responses,
+)
+from .utils import (preprocessText, sentimentAnalysis)
 
-def preprocessText(text):
-    cleaned_text = text.lower()
-    cleaned_text = re.sub("@[A-Za-z0-9_]+", " ", cleaned_text)
-    cleaned_text = re.sub("#[A-Za-z0-9_]+", " ", cleaned_text)
-    cleaned_text = re.sub(r"http\S+", " ", cleaned_text)
-    cleaned_text = re.sub(r"www.\S+", " ", cleaned_text)
-    cleaned_text = re.sub('[()!?]', ' ', cleaned_text)
-    cleaned_text = re.sub('\[.*?\]', ' ', cleaned_text)
-    cleaned_text = re.sub("[^a-z0-9]", " ", cleaned_text)
-    cleaned_text = re.sub('[0-9]+', " ", cleaned_text)
-    cleaned_text = re.sub("rt", "", cleaned_text)
-    cleaned_text = cleaned_text.strip()
-    return cleaned_text
+class GetSadnessScoreView(APIView):
+    """
+    API to compute sadness score for a single text input.
+    """
 
-def sentimentAnalysis(cleaned_text):
-    score = SentimentIntensityAnalyzer().polarity_scores(cleaned_text)
-    neg = score["neg"]
-    neu = score["neu"]
-    pos = score["pos"]
-    com = score["compound"]
-    print(f'Score : {com}')
-    if neg > 0:
-        if com < -0.6:
-            return (com, "Alarming!")
-        elif com < -0.5:
-            return (com, "Level 3 : Consultation Needed")
-        elif com < -0.4:
-            return (com, "Level 2 : Some Help would be preferred")
-        elif com < -0.3:
-            return (com, "Basic sadness")
-    return (0, "You're Okay!")
+    permission_classes = (permissions.AllowAny,)
 
-class EmotionAnalyzer(viewsets.ViewSet):
+    @swagger_auto_schema(
+        request_body=get_sadness_score_request_body,  # Swagger schema for request body
+        responses=get_sadness_score_responses,  # Swagger schema for responses
+        operation_description="Computes the sadness score for a text input.",
+    )
+    def post(self, request):
+        text = request.data.get("text", "")  # Retrieve the text from the request
 
-    @action(detail=False, methods=['post'])
-    def get_sadness_score(self, request):
-        text = request.data.get('text')
-        cleaned_text = preprocessText(text)
-        score, message = sentimentAnalysis(cleaned_text)
-        if score or message:
-            return JsonResponse({'score': score, 'message': message}, status=200)
-        else:
-            return JsonResponse({'error': 'An error occurred while computing Sadness Score'}, status=500)
+        if not text:  # Validate input
+            return Response(
+                {"error": "The 'text' field is required."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
-    @action(detail=False, methods=['post'])
-    def get_bulk_sadness_score(self, request):
-        posts = request.data.get('posts')
-        for post in posts:
-            if post['caption']:
-                cleaned_text = preprocessText(post['caption'])
-                score, message = sentimentAnalysis(cleaned_text)
-                post['score'] = score
-                post['message'] = message
-            else:
-                post['caption'] = 'No Caption Available'
-                post['score'] = 0
-                post['message'] = 'No Details Available'
-        if score or message:
-            return JsonResponse({'posts': posts}, status=200)
-        else:
-            return JsonResponse({'error': 'An error occurred while computing Sadness Score'}, status=500)
+        try:
+            cleaned_text = preprocessText(text)
+            sadness_score, message = sentimentAnalysis(cleaned_text)
+
+            return Response(
+                {"score": sadness_score, "message": message},
+                status=status.HTTP_200_OK,
+            )
+
+        except Exception as e:
+            return Response(
+                {"error": "An error occurred while computing sadness score."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+
+class GetBulkSadnessScoreView(APIView):
+    """
+    API to compute sadness scores for multiple text inputs (bulk operation).
+    """
+
+    permission_classes = (permissions.AllowAny,)
+
+    @swagger_auto_schema(
+        request_body=get_bulk_sadness_score_request_body,  # Swagger schema for input
+        responses=get_bulk_sadness_score_responses,  # Swagger schema for responses
+        operation_description="Computes sadness scores for multiple text inputs provided in bulk.",
+    )
+    def post(self, request):
+        posts = request.data.get("posts", [])  # Retrieve posts from the request
+
+        if not posts or not isinstance(posts, list):  # Validate input
+            return Response(
+                {"error": "'posts' field must be a non-empty list."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            result = []
+            for post in posts:
+                caption = post.get("caption", "")
+                if caption:  # Validate caption in individual items
+                    cleaned_text = preprocessText(post['caption'])
+                    sadness_score, message = sentimentAnalysis(cleaned_text)
+                    result.append(
+                        {"caption": caption, "score": sadness_score, "message": message}
+                    )
+                else:
+                    result.append({"caption": "No Caption Available", "score": 0, "message": "No Details Available"})
+
+            return Response({"posts": result}, status=status.HTTP_200_OK)
+
+        except Exception as e:  # Handle unexpected errors
+            return Response(
+                {"error": "An error occurred while processing bulk sadness scores."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )

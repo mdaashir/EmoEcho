@@ -1,9 +1,7 @@
-from rest_framework.routers import DefaultRouter
-from .views import EmotionAnalyzer
+from django.urls import path
+from .views import GetSadnessScoreView, GetBulkSadnessScoreView
 
-router = DefaultRouter()
-# router.register("get-sadness-score", EmotionAnalyzer.get_sadness_score, basename='getSadnessScore')
-# router.register("get-bulk-sadness-score", EmotionAnalyzer.get_bulk_sadness_score, basename='getBulkSadnessScore')
-router.register(prefix='', viewset=EmotionAnalyzer, basename='model')
-
-urlpatterns = router.urls
+urlpatterns = [
+    path('get-sadness-score/', GetSadnessScoreView.as_view(), name='get-sadness-score'),
+    path('get-bulk-sadness-score/', GetBulkSadnessScoreView.as_view(), name='get-bulk-sadness-score'),
+]
