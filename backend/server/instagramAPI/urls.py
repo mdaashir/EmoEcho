@@ -1,11 +1,14 @@
-from rest_framework.routers import DefaultRouter
-from .views import InstagramAPI
+from django.urls import path
+from .views import (
+    GetAuthorizationCodeView,
+    GetAccessTokenView,
+    GetUserDetailsView,
+    GetUserPostsView,
+)
 
-router = DefaultRouter()
-# router.register("get-authorization-code",InstagramAPI.get_authorization_code, basename="getAuthorizationCode")
-# router.register("get-access-token", InstagramAPI.get_access_token, basename="getAccessToken")
-# router.register("get-user-details", InstagramAPI.get_user_details, basename="getDetails")
-# router.register("get-user-posts", InstagramAPI.get_user_posts, basename="getUserPosts")
-router.register(prefix='', viewset=InstagramAPI, basename="instagram")
-
-urlpatterns = router.urls
+urlpatterns = [
+    path('get-authorization-code/', GetAuthorizationCodeView.as_view(), name='get-authorization-code'),
+    path('get-access-token/', GetAccessTokenView.as_view(), name='get-access-token'),
+    path('get-user-details/', GetUserDetailsView.as_view(), name='get-user-details'),
+    path('get-user-posts/', GetUserPostsView.as_view(), name='get-user-posts'),
+]
