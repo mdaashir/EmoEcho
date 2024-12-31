@@ -1,0 +1,681 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "EmoEcho API Documentation",
+    "description": "This is the API documentation for the EmoEcho project. EmoEcho is a platform designed to analyze and interpret emotional responses from textual data. The API provides endpoints for submitting text for analysis, retrieving emotional insights, and managing user data. This documentation provides detailed information about each endpoint, including request and response formats, authentication methods, and error handling.",
+    "contact": {
+      "email": "s.mohamedaashir@gmail.com"
+    },
+    "license": {
+      "name": "MIT License"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8000/api/v1"
+    }
+  ],
+  "security": [
+    {
+      "Basic": []
+    }
+  ],
+  "paths": {
+    "/instagram/get-access-token/": {
+      "post": {
+        "tags": [
+          "instagram"
+        ],
+        "description": "Exchanges an authorization code for a short-lived access token.",
+        "operationId": "instagram_get-access-token_create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "client_id",
+                  "client_secret",
+                  "code",
+                  "redirect_uri"
+                ],
+                "type": "object",
+                "properties": {
+                  "client_id": {
+                    "type": "string",
+                    "description": "Your Instagram app's Client ID."
+                  },
+                  "client_secret": {
+                    "type": "string",
+                    "description": "Your Instagram app's Client Secret."
+                  },
+                  "redirect_uri": {
+                    "type": "string",
+                    "description": "Callback URL matching the one specified in Instagram App settings."
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "The authorization code received after user login."
+                  }
+                },
+                "example": {
+                  "client_id": "your_client_id",
+                  "client_secret": "your_client_secret",
+                  "redirect_uri": "https://yourapp.com/auth_callback",
+                  "code": "authorization_code"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Access token and user ID received.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string"
+                    },
+                    "user_id": {
+                      "type": "integer"
+                    },
+                    "expires_in": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "example": {
+                  "access_token": "long_lived_access_token",
+                  "user_id": 123456789,
+                  "expires_in": 5184000
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error decoding JSON data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Details about the error."
+                    }
+                  }
+                },
+                "example": {
+                  "error": "All fields ('client_id', 'client_secret', 'redirect_uri', 'code') are required."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error occurred while fetching the access token.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Details about the error."
+                    }
+                  }
+                },
+                "example": {
+                  "error": "An error occurred while exchanging the authorization code."
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "data"
+      }
+    },
+    "/instagram/get-authorization-code/": {
+      "post": {
+        "tags": [
+          "instagram"
+        ],
+        "description": "Generates an Instagram Authorization URL based on the provided parameters.",
+        "operationId": "instagram_get-authorization-code_create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "client_id",
+                  "redirect_uri",
+                  "response_type",
+                  "scope"
+                ],
+                "type": "object",
+                "properties": {
+                  "client_id": {
+                    "type": "string",
+                    "description": "Instagram App Client ID."
+                  },
+                  "redirect_uri": {
+                    "type": "string",
+                    "description": "Callback URL where the authorization code will be sent."
+                  },
+                  "scope": {
+                    "type": "string",
+                    "description": "Permissions requested by the app (e.g., user_profile, user_media)."
+                  },
+                  "response_type": {
+                    "type": "string",
+                    "description": "Expected response type, e.g., code."
+                  }
+                },
+                "example": {
+                  "client_id": "your_client_id",
+                  "redirect_uri": "https://myapp.com/auth_callback",
+                  "scope": "user_profile,user_media",
+                  "response_type": "code"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "The Instagram authorization URL to acquire the authorization code.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "authorization_url": {
+                      "type": "string",
+                      "description": "Authorization URL to get the authorization code."
+                    }
+                  }
+                },
+                "example": {
+                  "authorization_url": "url_to_get_authorization_code"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input. For example, missing 'client_id' and 'redirect_uri' field.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Details about the error."
+                    }
+                  },
+                  "example": {
+                    "error": "'client_id' and 'redirect_uri' fields are required."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "data"
+      }
+    },
+    "/instagram/get-user-details/": {
+      "post": {
+        "tags": [
+          "instagram"
+        ],
+        "description": "Fetches user details from the Instagram Graph API.",
+        "operationId": "instagram_get-user-details_create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "access_token",
+                  "user_id"
+                ],
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "description": "User's Instagram ID."
+                  },
+                  "access_token": {
+                    "type": "string",
+                    "description": "Instagram API Access Token."
+                  }
+                },
+                "example": {
+                  "user_id": "123456789",
+                  "access_token": "valid_access_token"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "User details including ID and username.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "response": {
+                    "id": "123456789",
+                    "username": "instagram_username"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error decoding JSON data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Details about the error."
+                    }
+                  }
+                },
+                "example": {
+                  "error": "'user_id' and 'access_token' fields are required."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error occurred while fetching user details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Details about the error."
+                    }
+                  }
+                },
+                "example": {
+                  "error": "An error occurred while fetching user details."
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "data"
+      }
+    },
+    "/instagram/get-user-posts/": {
+      "post": {
+        "tags": [
+          "instagram"
+        ],
+        "description": "Fetches user posts from the Instagram Graph API.",
+        "operationId": "instagram_get-user-posts_create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "access_token",
+                  "user_id"
+                ],
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "description": "User's Instagram ID."
+                  },
+                  "access_token": {
+                    "type": "string",
+                    "description": "Instagram API Access Token."
+                  }
+                },
+                "example": {
+                  "user_id": "123456789",
+                  "access_token": "valid_access_token"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "User's posts including media details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "media_type": {
+                            "type": "string"
+                          },
+                          "media_url": {
+                            "type": "string"
+                          },
+                          "username": {
+                            "type": "string"
+                          },
+                          "caption": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "response": {
+                    "data": [
+                      {
+                        "id": "17895695668004550",
+                        "media_type": "IMAGE",
+                        "media_url": "https://example.com/media.jpg",
+                        "username": "instagram_username",
+                        "caption": "Sample caption"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error decoding JSON data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Details about the error."
+                    }
+                  }
+                },
+                "example": {
+                  "error": "'user_id' and 'access_token' fields are required."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error retrieving user posts.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "An error occurred while fetching user posts."
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "data"
+      }
+    },
+    "/model/get-bulk-sadness-score/": {
+      "post": {
+        "tags": [
+          "model"
+        ],
+        "description": "Computes sadness scores for multiple text inputs provided in bulk.",
+        "operationId": "model_get-bulk-sadness-score_create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "posts"
+                ],
+                "type": "object",
+                "properties": {
+                  "posts": {
+                    "type": "array",
+                    "description": "List of posts containing captions for bulk sadness score computation.",
+                    "items": {
+                      "required": [
+                        "caption"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "caption": {
+                          "type": "string",
+                          "description": "The caption or text content of a single post.",
+                          "example": "Feeling very sad and lonely."
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "posts": [
+                    {
+                      "caption": "Feeling sad and frustrated."
+                    },
+                    {
+                      "caption": "Struggling with work and emotions today."
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully computed sadness scores for all posts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "posts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "caption": {
+                            "type": "string",
+                            "description": "The original caption text."
+                          },
+                          "score": {
+                            "type": "number",
+                            "description": "The computed sadness score for the caption."
+                          },
+                          "message": {
+                            "type": "string",
+                            "description": "Message describing the sentiment level for the caption."
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "posts": [
+                    {
+                      "caption": "Feeling sad and frustrated.",
+                      "score": -0.6,
+                      "message": "Level 3 : Consultation Needed"
+                    },
+                    {
+                      "caption": "Struggling with work and emotions today.",
+                      "score": -0.45,
+                      "message": "Level 2 : Some Help would be preferred"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input, such as missing 'posts' field or captions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Details about the error."
+                    }
+                  },
+                  "example": {
+                    "error": "Field 'posts' is required."
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error occurred while computing the sadness scores.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Details about the server error."
+                    }
+                  },
+                  "example": {
+                    "error": "An error occurred while computing Sadness Score."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "data"
+      }
+    },
+    "/model/get-sadness-score/": {
+      "post": {
+        "tags": [
+          "model"
+        ],
+        "description": "Computes the sadness score for a text input.",
+        "operationId": "model_get-sadness-score_create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "text"
+                ],
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "description": "The text content for which sadness score needs to be computed.",
+                    "example": "I'm feeling really down today and struggling to concentrate."
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully computed sadness score.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "score": {
+                      "type": "number",
+                      "description": "The computed sadness score (compound score from sentiment analysis)."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Message describing the sentiment level, such as alarming or consultation needed."
+                    }
+                  }
+                },
+                "example": {
+                  "score": -0.65,
+                  "message": "Alarming!"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input. For example, missing 'text' field.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Details about the error."
+                    }
+                  },
+                  "example": {
+                    "error": "The 'text' field is required."
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error occurred while computing the sadness score.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Details about the server error."
+                    }
+                  },
+                  "example": {
+                    "error": "An error occurred while computing Sadness Score."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "data"
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "Basic": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "x-original-swagger-version": "2.0"
+}
