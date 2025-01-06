@@ -5,7 +5,7 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="EmoEcho API Documentation",
+        title="EmoEcho Backend API Documentation",
         default_version="v1",
         description="This is the API documentation for the EmoEcho project. EmoEcho is a platform designed to analyze and interpret emotional responses from textual data. The API provides endpoints for submitting text for analysis, retrieving emotional insights, and managing user data. This documentation provides detailed information about each endpoint, including request and response formats, authentication methods, and error handling.",
         contact=openapi.Contact(email="s.mohamedaashir@gmail.com"),
