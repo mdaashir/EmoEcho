@@ -86,3 +86,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ORIGIN_WHITELIST = [host.strip() for host in os.getenv("WHITELISTED_HOSTS", "").split(",") if host]
+
+if DEBUG:
+    CORS_ORIGIN_WHITELIST += ["https://" + os.getenv("NGROK_SUBDOMAIN")]
+

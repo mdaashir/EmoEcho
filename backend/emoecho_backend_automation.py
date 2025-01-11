@@ -45,6 +45,7 @@ def main():
     # Define variables
     env_name = ".venv"
     server_dir = "server"  # Backend folder location
+    dotenv_path = os.path.join(os.path.dirname(__file__), "..", ".env")
 
     # Step 1: Create the virtual environment
     create_virtual_environment(env_name=env_name)
@@ -55,14 +56,31 @@ def main():
     # Step 3: Install requirements
     install_requirements(env_name=env_name)
 
-    # Step 4: Change to the "server" directory
+    # Step 4: Import dotenv after installing dependencies
+    try:
+        from dotenv import load_dotenv
+    except ImportError:
+        print("Error: 'dotenv' package is not found even after installing dependencies.")
+        sys.exit(1)
+
+    # Step 5: Load the environment variables from the .env file
+    if not os.path.exists(dotenv_path):
+        print(f"Error: The .env file '{dotenv_path}' does not exist.")
+        sys.exit(1)
+
+    load_dotenv(dotenv_path=dotenv_path)
+
+    # Fetch the port from the .env file; default to 8000 if not set
+    port = os.getenv('BACKEND_PORT', '8000')
+
+    # Step 6: Change to the "server" directory
     if not os.path.exists(server_dir):
         print(f"Error: The project directory '{server_dir}' does not exist.")
         sys.exit(1)
     os.chdir(server_dir)
     print(f"Changed directory to '{server_dir}'...")
 
-    # Step 5: Run Django management commands
+    # Step 7: Run Django management commands
     print("Running make migrations...")
     run_command('python manage.py makemigrations')
 
@@ -72,8 +90,9 @@ def main():
     print("Running tests...")
     run_command('python manage.py test')
 
-    print("Starting the development server...")
-    run_command('python manage.py runserver')
+    # Step 8: Start the development server with the specified port
+    print(f"Starting the development server on port {port}...")
+    run_command(f'python manage.py runserver {port}')
 
 
 if __name__ == "__main__":
